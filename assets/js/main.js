@@ -225,5 +225,38 @@
   }
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
+    /**
+   * Handle Netlify form submissions
+   */
+  const contactForm = document.querySelector('.php-email-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const loading = form.querySelector('.loading');
+      const errorMessage = form.querySelector('.error-message');
+      const sentMessage = form.querySelector('.sent-message');
+
+      loading.style.display = 'block';
+      errorMessage.style.display = 'none';
+      sentMessage.style.display = 'none';
+
+      try {
+        const formData = new FormData(form);
+        await fetch('/', {
+          method: 'POST',
+          body: formData
+        });
+        loading.style.display = 'none';
+        sentMessage.style.display = 'block';
+        form.reset();
+      } catch (error) {
+        loading.style.display = 'none';
+        errorMessage.style.display = 'block';
+      }
+    });
+  }
+
 
 })();
